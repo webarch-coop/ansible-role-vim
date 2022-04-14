@@ -1,0 +1,88 @@
+---
+- name: Install and configure Vim
+  block:
+
+    - name: Full version of vim installed
+      apt:
+        pkg:
+          - vim
+        state: present
+        update_cache: false
+
+    - name: Getent passwd
+      getent:
+        database: passwd
+        key: "{{ vim_user }}"
+        split: ':'
+
+    - name: Print the usernames
+      debug:
+        var: getent_passwd
+        verbosity: 2
+
+    - name: Debug fail
+      fail:
+
+    - name: ~/.vimrc in place
+      copy:
+        src: files/vimrc
+        dest: /root/.vimrc
+        mode: 0640
+
+    - name: Create directories for root for vim
+      file:
+        path: "{{ dir }}"
+        state: directory
+        mode: 0750
+      check_mode: false
+      loop:
+        - /root/.vim
+        - /root/.vim/syntax
+        - /root/.vim/plugin
+      loop_control:
+        loop_var: dir
+        label: "{{ dir }}"
+
+    - name: Securemodelines plugin in place
+      copy:
+        src: files/securemodelines.vim
+        dest: /root/.vim/plugin/securemodelines.vim
+        mode: 0640
+
+    # The following should probably simply copy ~/.vim/ into place
+    - name: Check if filetype.vim exists
+      stat:
+        path: /root/.vim/filetype.vim
+      register: vim_filetype_exists
+
+    - name: Create filetype.vim, if it doesn't exist already
+      file:
+        path: "/root/.vim/filetype.vim"
+        state: touch
+        force: true
+        mode: 0640
+      when: not vim_filetype_exists.stat.exists
+
+    - name: Nginx syntax highlighting in place
+      copy:
+        src: nginx.vim
+        dest: /root/.vim/syntax/nginx.vim
+        mode: 0640
+
+    - name: Add Nginx to filetype.vim
+      lineinfile:
+        path: /root/.vim/filetype.vim
+        line: "au BufRead,BufNewFile /etc/nginx/*,/etc/nginx/conf.d/*,/etc/nginx/sites-available/*,/etc/nginx/sites-enabled/* if &ft == '' | setfiletype nginx | endif"
+        state: present
+        mode: 0640
+
+    - name: .selected_editor in place
+      template:
+        src: selected_editor.j2
+        dest: /root/.selected_editor
+        mode: 0600
+
+  when: vim
+  tags:
+    - vim
+...
