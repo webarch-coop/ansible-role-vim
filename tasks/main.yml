@@ -15,9 +15,9 @@
         key: "{{ vim_user }}"
         split: ':'
 
-    - name: Print the usernames
+    - name: Print the users HOME
       debug:
-        var: getent_passwd
+        var: getent_passwd.vim_user[4]
         verbosity: 2
 
     - name: Debug fail
