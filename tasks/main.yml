@@ -19,7 +19,7 @@
       set_fact:
         vim_home: "{{ users.value }}"
       when: ansible_loop.index == 5
-      loop: "{{ getent_passwd.keys | dict2items | }}"
+      loop: "{{ getent_passwd.keys | dict2items }}"
       loop_control:
         extended: true
         loop_var: user
