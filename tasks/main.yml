@@ -15,6 +15,11 @@
         key: "{{ vim_user }}"
         split: ':'
 
+    - name: Debug getent passwd
+      debug:
+        var: getent_passwd
+        verbosity: 2
+
     - name: Set a fact for the users HOME
       set_fact:
         vim_home: "{{ users.value[5] }}"
