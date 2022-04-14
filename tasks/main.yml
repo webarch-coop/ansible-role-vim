@@ -12,7 +12,7 @@
     - name: Vim set as default editor
       community.general.alternatives:
         name: editor
-        path: /usr/bin/vim.basic
+        path: "{{ vim_path }}"
       when: vim_alternatives
 
     - name: Getent passwd

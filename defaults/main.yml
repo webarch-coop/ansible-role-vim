@@ -1,5 +1,6 @@
 ---
 vim: true
+vim_path: /usr/bin/vim.basic
 vim_alternatives: true
 vim_user: root
 vim_group: "{{ vim_user }}"
