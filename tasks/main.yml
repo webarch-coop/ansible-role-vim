@@ -47,16 +47,15 @@
 
     - name: ~/.vim directories present
       ansible.builtin.file:
-        path: "{{ dir }}"
+        path: "{{ vim_home }}{{ dir }}"
         state: directory
-        recurse: true
         mode: 0750
         owner: "{{ vim_user }}"
         group: "{{ vim_group }}"
       loop:
-        - /root/.vim
-        - /root/.vim/syntax
-        - /root/.vim/plugin
+        - /.vim
+        - /.vim/syntax
+        - /.vim/plugin
       loop_control:
         loop_var: dir
         label: "{{ dir }}"
