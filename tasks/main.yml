@@ -17,7 +17,7 @@
 
     - name: Print the users HOME
       debug:
-        var: getent_passwd.vim_user[4]
+        var: getent_passwd['vim_user'][4]
         verbosity: 2
 
     - name: Debug fail
