@@ -3,7 +3,7 @@
   block:
 
     - name: Full version of vim installed
-      apt:
+      ansible.builtin.apt:
         pkg:
           - vim
         state: present
@@ -16,18 +16,18 @@
       when: vim_alternatives
 
     - name: Getent passwd
-      getent:
+      ansible.builtin.getent:
         database: passwd
         key: "{{ vim_user }}"
         split: ':'
 
     - name: Debug getent passwd
-      debug:
+      ansible.builtin.debug:
         var: getent_passwd
         verbosity: 2
 
     - name: Set a fact for the users HOME
-      set_fact:
+      ansible.builtin.set_fact:
         vim_home: "{{ user.value[4] }}"
       when: user.key == vim_user
       loop: "{{ getent_passwd | dict2items }}"
@@ -37,7 +37,7 @@
         label: "{{ user.key }}"
 
     - name: ~/.vimrc in place
-      template:
+      ansible.builtin.template:
         src: vimrc.j2
         dest: "{{ vim_home }}/.vimrc"
         force: false
@@ -46,7 +46,7 @@
         group: "{{ vim_group }}"
 
     - name: ~/.vim directories present
-      file:
+      ansible.builtin.file:
         path: "{{ dir }}"
         state: directory
         recurse: true
@@ -62,7 +62,7 @@
         label: "{{ dir }}"
 
     - name: Securemodelines plugin in place
-      template:
+      ansible.builtin.template:
         src: securemodelines.vim.j2
         dest: "{{ vim_home }}/.vim/plugin/securemodelines.vim"
         mode: 0640
@@ -70,7 +70,7 @@
         group: "{{ vim_group }}"
 
     - name: Nginx syntax highlighting in place
-      copy:
+      ansible.builtin.template:
         src: nginx.vim.j2
         dest: /root/.vim/syntax/nginx.vim
         mode: 0640
@@ -78,7 +78,7 @@
         group: "{{ vim_group }}"
 
     - name: Add Nginx to filetype.vim
-      lineinfile:
+      ansible.builtin.lineinfile:
         path: "{{ vim_home }}/.vim/filetype.vim"
         line: "au BufRead,BufNewFile /etc/nginx/*,/etc/nginx/conf.d/*,/etc/nginx/sites-available/*,/etc/nginx/sites-enabled/* if &ft == '' | setfiletype nginx | endif"
         state: present
@@ -88,7 +88,7 @@
         group: "{{ vim_group }}"
 
     - name: ~/.selected_editor in place
-      template:
+      ansible.builtin.template:
         src: selected_editor.j2
         dest: "{{ vim_home }}/.selected_editor"
         mode: 0640
