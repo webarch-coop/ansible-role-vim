@@ -22,7 +22,7 @@
 
     - name: Set a fact for the users HOME
       set_fact:
-        vim_home: "{{ user.value[5] }}"
+        vim_home: "{{ user.value[4] }}"
       when: user.key == vim_user
       loop: "{{ getent_passwd | dict2items }}"
       loop_control:
