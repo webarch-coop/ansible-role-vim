@@ -37,7 +37,7 @@
         label: "{{ user.key }}"
 
     - name: ~/.vimrc in place
-      copy:
+      template:
         src: vimrc.j2
         dest: "{{ vim_home }}/.vimrc"
         force: false
