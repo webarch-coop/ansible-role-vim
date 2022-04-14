@@ -1,4 +1,7 @@
 ---
 vim: true
+vim_alternatives: true
 vim_user: root
+vim_group: "{{ vim_user }}"
+vim_selected: true
 ...

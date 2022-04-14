@@ -9,6 +9,12 @@
         state: present
         update_cache: false
 
+    - name: Vim set as default editor
+      community.general.alternatives:
+        name: editor
+        path: /usr/bin/vim.basic
+      when: vim_alternatives
+
     - name: Getent passwd
       getent:
         database: passwd
@@ -30,21 +36,23 @@
         loop_var: user
         label: "{{ user.key }}"
 
-    - name: Debug fail
-      fail:
-
     - name: ~/.vimrc in place
       copy:
-        src: files/vimrc
-        dest: /root/.vimrc
+        src: vimrc.j2
+        dest: "{{ vim_home }}/.vimrc"
+        force: false
         mode: 0640
+        owner: "{{ vim_user }}"
+        group: "{{ vim_group }}"
 
-    - name: Create directories for root for vim
+    - name: ~/.vim directories present
       file:
         path: "{{ dir }}"
         state: directory
+        recurse: true
         mode: 0750
-      check_mode: false
+        owner: "{{ vim_user }}"
+        group: "{{ vim_group }}"
       loop:
         - /root/.vim
         - /root/.vim/syntax
@@ -54,43 +62,39 @@
         label: "{{ dir }}"
 
     - name: Securemodelines plugin in place
-      copy:
-        src: files/securemodelines.vim
-        dest: /root/.vim/plugin/securemodelines.vim
+      template:
+        src: securemodelines.vim.j2
+        dest: "{{ vim_home }}/.vim/plugin/securemodelines.vim"
         mode: 0640
-
-    # The following should probably simply copy ~/.vim/ into place
-    - name: Check if filetype.vim exists
-      stat:
-        path: /root/.vim/filetype.vim
-      register: vim_filetype_exists
-
-    - name: Create filetype.vim, if it doesn't exist already
-      file:
-        path: "/root/.vim/filetype.vim"
-        state: touch
-        force: true
-        mode: 0640
-      when: not vim_filetype_exists.stat.exists
+        owner: "{{ vim_user }}"
+        group: "{{ vim_group }}"
 
     - name: Nginx syntax highlighting in place
       copy:
-        src: nginx.vim
+        src: nginx.vim.j2
         dest: /root/.vim/syntax/nginx.vim
         mode: 0640
+        owner: "{{ vim_user }}"
+        group: "{{ vim_group }}"
 
     - name: Add Nginx to filetype.vim
       lineinfile:
-        path: /root/.vim/filetype.vim
+        path: "{{ vim_home }}/.vim/filetype.vim"
         line: "au BufRead,BufNewFile /etc/nginx/*,/etc/nginx/conf.d/*,/etc/nginx/sites-available/*,/etc/nginx/sites-enabled/* if &ft == '' | setfiletype nginx | endif"
         state: present
+        create: true
         mode: 0640
+        owner: "{{ vim_user }}"
+        group: "{{ vim_group }}"
 
-    - name: .selected_editor in place
+    - name: ~/.selected_editor in place
       template:
         src: selected_editor.j2
-        dest: /root/.selected_editor
-        mode: 0600
+        dest: "{{ vim_home }}/.selected_editor"
+        mode: 0640
+        owner: "{{ vim_user }}"
+        group: "{{ vim_group }}"
+      when: vim_selected
 
   when: vim
   tags:
