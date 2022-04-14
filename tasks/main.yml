@@ -15,10 +15,15 @@
         key: "{{ vim_user }}"
         split: ':'
 
-    - name: Print the users HOME
-      debug:
-        var: getent_passwd['vim_user'][4]
-        verbosity: 2
+    - name: Set a fact for the users HOME
+      set_fact:
+        vim_home: "{{ users.value }}"
+      when: ansible_loop.index == 5
+      loop: "{{ getent_passwd.keys | dict2items | }}"
+      loop_control:
+        extended: true
+        loop_var: user
+        label: "{{ user.key }}"
 
     - name: Debug fail
       fail:
