@@ -36,6 +36,16 @@
         loop_var: user
         label: "{{ user.key }}"
 
+    - name: Stat ~/.vimrc
+      ansible.builtin.stat:
+        path: "{{ vim_home }}/.vimrc"
+      register: vim_vimrc 
+
+    - name: Debug vim_vimrc
+      debug:
+        var: vim_vimrc
+        verbosity: 2
+
     - name: ~/.vimrc in place
       ansible.builtin.template:
         src: vimrc.j2
