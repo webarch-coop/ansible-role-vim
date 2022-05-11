@@ -41,16 +41,11 @@
         path: "{{ vim_home }}/.vimrc"
       register: vim_vimrc 
 
-    - name: Debug vim_vimrc.stat.blocks
-      debug:
-        var: vim_vimrc.stat.blocks
-        verbosity: 2
-
     - name: ~/.vimrc in place if it doesn't exist or is empty
       ansible.builtin.template:
         src: vimrc.j2
         dest: "{{ vim_home }}/.vimrc"
-        force: "{% if vim_vimrc.stat.blocks == 0 %}true{% else %}false{% endif %}"
+        force: "{% if not vim_vimrc.stat.exists or vim_vimrc.stat.blocks == 0 %}true{% else %}false{% endif %}"
         mode: 0640
         owner: "{{ vim_user }}"
         group: "{{ vim_group }}"
