@@ -39,7 +39,7 @@
     - name: Stat ~/.vimrc
       ansible.builtin.stat:
         path: "{{ vim_home }}/.vimrc"
-      register: vim_vimrc 
+      register: vim_vimrc
 
     - name: ~/.vimrc in place if it doesn't exist or is empty
       ansible.builtin.template:
