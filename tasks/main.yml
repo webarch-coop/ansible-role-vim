@@ -6,8 +6,10 @@
       ansible.builtin.apt:
         pkg:
           - vim
+          - vim-icinga2
         state: present
         update_cache: false
+      when: ansible_effective_user_id == 0
 
     - name: Vim set as default editor
       community.general.alternatives:
