@@ -48,7 +48,7 @@
         src: vimrc.j2
         dest: "{{ vim_home }}/.vimrc"
         force: "{% if not vim_vimrc.stat.exists or vim_vimrc.stat.blocks == 0 %}true{% else %}false{% endif %}"
-        mode: 0640
+        mode: "0640"
         owner: "{{ vim_user }}"
         group: "{{ vim_group }}"
 
@@ -71,7 +71,7 @@
       ansible.builtin.template:
         src: securemodelines.vim.j2
         dest: "{{ vim_home }}/.vim/plugin/securemodelines.vim"
-        mode: 0640
+        mode: "0640"
         owner: "{{ vim_user }}"
         group: "{{ vim_group }}"
 
@@ -89,7 +89,7 @@
         line: "au BufRead,BufNewFile /etc/nginx/*,/etc/nginx/conf.d/*,/etc/nginx/sites-available/*,/etc/nginx/sites-enabled/* if &ft == '' | setfiletype nginx | endif"
         state: present
         create: true
-        mode: 0640
+        mode: "0640"
         owner: "{{ vim_user }}"
         group: "{{ vim_group }}"
 
@@ -97,7 +97,7 @@
       ansible.builtin.template:
         src: selected_editor.j2
         dest: "{{ vim_home }}/.selected_editor"
-        mode: 0640
+        mode: "0640"
         owner: "{{ vim_user }}"
         group: "{{ vim_group }}"
       when: vim_selected
