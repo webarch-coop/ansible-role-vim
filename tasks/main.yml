@@ -34,14 +34,14 @@
 
     - name: Debug getent passwd
       ansible.builtin.debug:
-        var: getent_passwd
+        var: ansible_facts.getent_passwd
         verbosity: 2
 
     - name: Set a fact for the users HOME
       ansible.builtin.set_fact:
         vim_home: "{{ user.value[4] }}"
       when: user.key == vim_user
-      loop: "{{ getent_passwd | dict2items }}"
+      loop: "{{ ansible_facts.getent_passwd | dict2items }}"
       loop_control:
         extended: true
         loop_var: user
