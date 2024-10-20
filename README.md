@@ -4,7 +4,7 @@
 
 This is an Ansible role for installing [Vim](https://www.vim.org/) on Debian or Ubuntu, for the `root` user by default but it can be used for other users.
 
-It creates [a `~/.vimrc`](templates/vimrc.j2) if it doesn't already exist, enables [secure modelines for syntax highlighing](templates/securemodelines.vim.j2) and adds [syntax highlighing for Nginx](templates/nginx.vim.j2) 
+It creates [a `~/.vimrc`](templates/vimrc.j2) if it doesn't already exist, enables [secure modelines for syntax highlighing](templates/securemodelines.vim.j2) and adds [syntax highlighing for Nginx](templates/nginx.vim.j2)
 
 There are six [default variables](defaults/main.yml):
 

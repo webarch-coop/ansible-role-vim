@@ -1,3 +1,12 @@
+# Copyright 2022-2024 Chris Croome
+#
+# This file is part of the Webarchitects Vim Ansible role.
+#
+# The Webarchitects Vim Ansible role is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# The Webarchitects Vim Ansible role is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with the Webarchitects Vim Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
 - name: Install and configure Vim
   block:
@@ -9,7 +18,7 @@
           - vim-icinga2
         state: present
         update_cache: false
-      when: ansible_effective_user_id == 0
+      when: ansible_facts.effective_user_id == 0
 
     - name: Vim set as default editor
       community.general.alternatives:
@@ -56,7 +65,7 @@
       ansible.builtin.file:
         path: "{{ vim_home }}{{ dir }}"
         state: directory
-        mode: 0750
+        mode: "0750"
         owner: "{{ vim_user }}"
         group: "{{ vim_group }}"
       loop:
@@ -79,7 +88,7 @@
       ansible.builtin.template:
         src: nginx.vim.j2
         dest: /root/.vim/syntax/nginx.vim
-        mode: 0640
+        mode: "0640"
         owner: "{{ vim_user }}"
         group: "{{ vim_group }}"
 

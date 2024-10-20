@@ -1,3 +1,12 @@
+# Copyright 2022-2024 Chris Croome
+#
+# This file is part of the Webarchitects Vim Ansible role.
+#
+# The Webarchitects Vim Ansible role is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# The Webarchitects Vim Ansible role is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with the Webarchitects Vim Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
 galaxy_info:
   role_name: vim
@@ -6,18 +15,20 @@ galaxy_info:
   description: Ansible role for installing and configuring Vim on Debian and Ubuntu servers
   company: Webarchitects Co-operative
   license: GNU General Public License v3.0 (GPLv3)
-  min_ansible_version: 2.9
+  min_ansible_version: "2.10.7"
   platforms:
-    - name: debian
+    - name: Debian
       versions:
         - bookworm
         - bullseye
         - buster
         - stretch
-    - name: ubuntu
+        # - trixie
+    - name: Ubuntu
       versions:
         - focal
         - bionic
+        - noble
         - xenial
   galaxy_tags: []
   # List tags for your role here, one per line. A tag is a keyword that describes
